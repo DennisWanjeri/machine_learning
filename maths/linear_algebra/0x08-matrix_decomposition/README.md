@@ -14,3 +14,11 @@
 	<li>How to calculate eigendecomposition using Numpy</li>
 	<li>How to confirm a vector is an eigenvector and how to reconstruct a matrix from eigenvectors and eigenvalues</li>
 </ul>
+<h1>Singular Value Decomposition</h1>
+<p>is the most used decomposition method, all matrices have an SVD which makes it more stable</p>
+<h2>Objectives:</h2>
+<ul>
+	<li>Learn what Singular-value decomposition is and what is involved</li>
+	<li>How to calculate an SVD and reconstruct a rectangular and square matrix from SVD elements</li>
+	<li>How to calculate pseudoinverse and perform dimensionality reduction using the SVD</li>
+</ul>
