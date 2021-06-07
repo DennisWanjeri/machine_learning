@@ -1,5 +1,5 @@
 <h1>Linear Regression</h1>
-<p>Is a method forf modelling the relationship between one or more independent variables and a dependent variable</p>
+<p>Is a method for modelling the relationship between one or more independent variables and a dependent variable</p>
 <h2>Objectives:</h2>
 <p>Learn:</p>
 <ul>
