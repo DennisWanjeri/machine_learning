@@ -27,4 +27,8 @@ missing_data.sort_values(by='perc_missing', ascending=False, inplace=True)
 print(missing_data)
 nullable_columns = data.columns[mask.any()].tolist()
 msno.matrix(data[nullable_columns].sample(500))
+#nullity matrix
 plt.savefig('nullity.png')
+#nullity correlation heatmap
+msno.heatmap(data[nullable_columns], figsize=(18, 18))
+plt.savefig('nullity_heatmap.png')
