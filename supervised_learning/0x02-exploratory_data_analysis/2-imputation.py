@@ -6,7 +6,7 @@ import json
 import pandas as pd
 import numpy as np
 import missingno as msno
-from sklearn.preprocessing import Imputer
+from sklearn.impute import SimpleImputer
 import matplotlib.pyplot as plt
 import seaborn as sns
 
@@ -43,6 +43,24 @@ description_features = [
     'injuries_description', 'damage_description',
     'total_injuries_description', 'total_damage_description'
 ]
-#imp = SimpleImputer(missing_values=np.nan, strategy='constant', fill_value='NA')
-#data[description_features] = imp.fit_transform(data[description_features])
-#print(data[description_features].info()
+imp = SimpleImputer(missing_values=np.nan, strategy='constant', fill_value='NA')
+data[description_features] = imp.fit_transform(data[description_features])
+print(data[description_features].info())
+#imputation from inferred values
+print(data[pd.isnull(data.damage_millions_dollars)].shape[0])
+print(data[pd.isnull(data.damage_millions_dollars) & (data.damage_description != 'NA')].shape[0])
+
+category_means = data[['damage_description', 'damage_millions_dollars']].groupby('damage_description').mean()
+print(category_means)
+replacement_values = category_means.damage_millions_dollars.to_dict()
+replacement_values['NA'] = -1
+replacement_values['0'] = 0
+print(replacement_values)
+#mapping categorical value
+imputed_values = data.damage_description.map(replacement_values)
+#np.where as a ternary operator
+data['damage_million_dollars'] = np.where(data.damage_millions_dollars.isnull(),
+                                          imputed_values,
+                                          data.damage_millions_dollars)
+print(data[['damage_millions_dollars']].info())
+#print(imputed_values)
