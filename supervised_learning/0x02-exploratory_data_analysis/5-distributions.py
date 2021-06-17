@@ -59,3 +59,7 @@ plt.figure(figsize=(10, 10))
 plt.pie(counts, labels=counts.index)
 plt.title('Pie chart showing counts for \ndamage_description categories')
 plt.savefig('damage_des.png')
+#plotting a histogram
+plt.figure(figsize=(10, 7))
+sns.distplot(data.eq_primary.dropna(), bins=np.linspace(0, 10, 21))
+plt.savefig('eq_histogram.png')
