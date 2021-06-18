@@ -63,3 +63,6 @@ plt.savefig('damage_des.png')
 plt.figure(figsize=(10, 7))
 sns.distplot(data.eq_primary.dropna(), bins=np.linspace(0, 10, 21))
 plt.savefig('eq_histogram.png')
+#skew and kurtosis
+print(data.skew().sort_values())
+print(data.kurt())

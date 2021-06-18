@@ -8,6 +8,7 @@ import numpy as np
 import missingno as msno
 from sklearn.impute import SimpleImputer
 import matplotlib.pyplot as plt
+import seaborn as sns
 
 data = pd.read_csv('house_prices.csv')
 print(data.info())
@@ -32,3 +33,7 @@ plt.savefig('3-heatmap.png')
 data = data.loc[:, missing_data[missing_data.perc_missing < 80].index]
 #replacing null values
 data['FireplaceQu'] = data['FireplaceQu'].fillna('NA')
+#plotting a histogram for SalePrice
+plt.figure(figsize=(10, 7))
+sns.distplot(data.SalePrice.dropna(), bins=np.linspace(0, 10, 21))
+plt.savefig('hse_SalePrice_hist.png')
