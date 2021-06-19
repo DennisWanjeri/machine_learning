@@ -101,3 +101,11 @@ subset = data[data.country.isin(top_countries.index)]
 plt.figure(figsize=(15, 15))
 sns.boxplot(x='country', y='eq_primary', data=subset, order=top_countries.index)
 plt.savefig('boxplot.png')
+#stacked Bar Chart
+grouped_data = data.groupby(['intensity', 'flag_tsunami']).size()
+#print(grouped_data)
+data_to_plot = grouped_data.unstack()
+#print(data_to_plot)
+sns.set()
+data_to_plot.plot(kind='bar', stacked=True, figsize=(12, 8))
+plt.savefig('stackedbarchart.png')
