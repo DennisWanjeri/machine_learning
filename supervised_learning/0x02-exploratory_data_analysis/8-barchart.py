@@ -88,7 +88,7 @@ subset = data[~pd.isnull(data.intensity)][['intensity', 'flag_tsunami']]
 data_to_plot = subset.groupby('intensity').sum()
 #print(data_to_plot)
 plt.figure(figsize=(12, 9))
-plt.bar(x=data_to_plot.index, height=data_to_plot.flag_tsunami)
+plt.bar(data_to_plot.index, data_to_plot.flag_tsunami)
 plt.xlabel('Earthquake intensity')
 plt.ylabel('No of tsunamis')
 plt.savefig('barchart.png')
