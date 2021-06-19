@@ -74,6 +74,11 @@ plt.xlabel('Primary earthquake magnitude')
 plt.ylabel('No. of injuries')
 plt.savefig('6-scatterplot.png')
 #correlation Heatmap
+feature_subset = [
+    'focal_depth', 'eq_primary', 'eq_mag_mw', 'eq_mag_ms', 'eq_mag_mb',
+    'intensity',
+    'latitude', 'longitude', 'injuries', 'damage_millions_dollars',
+     'total_injuries', 'total_damage_millions_dollars']
 plt.figure(figsize = (12, 10))
-sns.heatmap(data.corr(), square=True, cmap="YlGnBu")
+sns.heatmap(data[feature_subset].corr(), square=True, annot=True, cmap="RdBu", vmin=-1, vmax=1)
 plt.savefig('6-corr_heatmap.png')
