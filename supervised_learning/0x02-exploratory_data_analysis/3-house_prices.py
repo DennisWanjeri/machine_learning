@@ -34,6 +34,34 @@ data = data.loc[:, missing_data[missing_data.perc_missing < 80].index]
 #replacing null values
 data['FireplaceQu'] = data['FireplaceQu'].fillna('NA')
 #plotting a histogram for SalePrice
-plt.figure(figsize=(10, 7))
-sns.distplot(data.SalePrice.dropna(), bins=np.linspace(0, 10, 21))
+plt.figure(figsize=(8,6))
+plt.hist(data.SalePrice, bins=range(0, 800000, 500000))
+plt.ylabel('Number of data points')
+plt.xlabel('SalePrice')
 plt.savefig('hse_SalePrice_hist.png')
+#number of unique values within each column having an object type
+object_variables = data.select_dtypes(include=[np.object])
+print(object_variables.nunique().sort_values())
+#no. of ocurrences of each categorical value in HouseStyle
+counts = data.HouseStyle.value_counts(dropna=False)
+counts = counts.reset_index().sort_values(by='index')
+print(counts)
+#draw a piechart
+counts = data.HouseStyle.value_counts()
+counts = counts.sort_index()
+plt.figure(figsize=(10,10))
+plt.pie(counts, labels=counts.index)
+plt.title('Pie chart showing counts for\nHouseStyle')
+plt.savefig('HouseStyle_pie.png')
+#unique values within each column having numerics
+numeric_values = data.select_dtypes(include=[np.number])
+print(numeric_values.nunique().sort_values(ascending=False))
+#LotArea Histogram
+plt.figure(figsize=(10,7))
+sns.distplot(data.LotArea.dropna(), bins=range(0, 100000, 1000))
+plt.xlim(0, 100000)
+plt.savefig('LotArea_hist.png')
+#skew
+data.skew().sort_values()
+#kurtosis
+data.kurt()
