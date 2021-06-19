@@ -73,3 +73,7 @@ plt.scatter(x=data_to_plot.eq_primary, y=data_to_plot.injuries)
 plt.xlabel('Primary earthquake magnitude')
 plt.ylabel('No. of injuries')
 plt.savefig('6-scatterplot.png')
+#correlation Heatmap
+plt.figure(figsize = (12, 10))
+sns.heatmap(data.corr(), square=True, cmap="YlGnBu")
+plt.savefig('6-corr_heatmap.png')
