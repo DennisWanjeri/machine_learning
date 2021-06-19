@@ -92,3 +92,12 @@ plt.bar(data_to_plot.index, data_to_plot.flag_tsunami)
 plt.xlabel('Earthquake intensity')
 plt.ylabel('No of tsunamis')
 plt.savefig('barchart.png')
+#Box plot
+print(data.country)
+country_counts = data.country.value_counts()
+top_countries = country_counts[country_counts > 100]
+print(top_countries)
+subset = data[data.country.isin(top_countries.index)]
+plt.figure(figsize=(15, 15))
+sns.boxplot(x='country', y='eq_primary', data=subset, order=top_countries.index)
+plt.savefig('boxplot.png')
