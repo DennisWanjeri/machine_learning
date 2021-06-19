@@ -83,6 +83,5 @@ plt.figure(figsize = (12, 10))
 sns.heatmap(data[feature_subset].corr(), square=True, annot=True, cmap="RdBu", vmin=-1, vmax=1)
 plt.savefig('6-corr_heatmap.png')
 #pairplot
-plt.figure(figsize=(12, 10))
 sns.pairplot(data[feature_subset].dropna(), kind ='scatter', diag_kind='kde')
 plt.savefig('6-pairplot.png')
