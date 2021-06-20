@@ -23,5 +23,5 @@ ax.set_title('Mean Air Temperature Measurements')
 ax.set_xlabel('Year')
 ax.set_ylabel('Temperature (degC)')
 ax.set_xticks(range(df_group_year.index.min(), df_group_year.index.max(), 10))
-ax.legend();
-plt.savefig('mean_annual_temp.png')
+ax.legend()
+fig.savefig('mean_annual_temp.png')
