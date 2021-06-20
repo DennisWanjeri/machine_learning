@@ -13,15 +13,14 @@ window = 10
 rolling = df_group_year.AverageTemperature.rolling(window).mean()
 print(rolling.head(n=20))
 #plotting measurements by year along with mobing average signal
-fig = plt.figure(figsize=(10, 7))
-ax = fig.add_axes([1, 1, 1, 1])
+plt.figure(figsize=(10, 7))
 #Temp measurements
-ax.scatter(df_group_year.index, df_group_year.AverageTemperature, label='Raw Data', c='k')
-ax.plot(df_group_year.index, rolling, c='k', linestyle='--',
+plt.scatter(df_group_year.index, df_group_year.AverageTemperature, label='Raw Data', c='k')
+plt.plot(df_group_year.index, rolling, c='k', linestyle='--',
         label='{} year moving average'.format(window))
-ax.set_title('Mean Air Temperature Measurements')
-ax.set_xlabel('Year')
-ax.set_ylabel('Temperature (degC)')
-ax.set_xticks(range(df_group_year.index.min(), df_group_year.index.max(), 10))
-ax.legend()
-fig.savefig('mean_annual_temp.png')
+plt.title('Mean Air Temperature Measurements')
+plt.xlabel('Year')
+plt.ylabel('Temperature (degC)')
+plt.xticks(range(df_group_year.index.min(), df_group_year.index.max(), 10))
+plt.legend()
+plt.savefig('mean_annual_temp.png')
