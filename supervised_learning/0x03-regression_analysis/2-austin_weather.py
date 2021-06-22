@@ -37,6 +37,9 @@ trend_x = np.array([
 trend_y = model.predict(trend_x.reshape((-1, 1)))
 
 print(trend_y)
+#calculate the score of the model
+r2 = model.score(df_first_year.DayOfYear.values.reshape((-1, 1)), df_first_year.TempAvgF)
+print("r2 score = {}".format(r2))
 #plotting
 plt.figure(figsize=(10, 7))
 plt.scatter(range(1, 366), df_first_year.TempAvgF, label='Raw Data')

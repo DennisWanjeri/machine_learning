@@ -32,13 +32,34 @@ print(trend_y)
 #r2 value
 r2 = model.score(df_group_year.index.values.reshape((-1, 1)), df_group_year.AverageTemperature)
 print("r2 score = {}".format(r2))
+
+#Dummy variables
+df_group_year['Year'] = df_group_year.index
+df_group_year['Gt_1960'] = [0 if year < 1960 else 10 for year in df_group_year.Year]
+print(df_group_year.head(n=2))
+df_group_year['Gt_1945'] = [0 if year < 1945 else 10 for year in df_group_year.Year]
+print(df_group_year.head(n=2))
+print(df_group_year.tail(n=2))
+model.fit(df_group_year[['Year', 'Gt_1960', 'Gt_1945']], df_group_year.AverageTemperature)
+r2 = model.score(df_group_year[['Year', 'Gt_1960', 'Gt_1945']], df_group_year.AverageTemperature)
+print("r2 = {}".format(r2))
+#use linspace to get a range of 20 yr increments
+x = np.linspace(df_group_year['Year'].min(), df_group_year['Year'].max(), 20)
+print(x)
+trend_x = np.zeros((20, 3))
+trend_x[:, 0] = x
+trend_x[:, 1] = [10 if _x > 1960 else 0 for _x in x]
+trend_x[:, 2] = [10 if _x > 1945 else 0 for _x in x]
+print(trend_x)
+trend_y = model.predict(trend_x)
+print(trend_y)
 #plotting measurements by year along with moving average signal
 plt.figure(figsize=(10, 7))
 #Temp measurements
 plt.scatter(df_group_year.index, df_group_year.AverageTemperature, label='Raw Data', c='k')
 plt.plot(df_group_year.index, rolling, c='k', linestyle='--',
          label='{} year moving average'.format(window))
-plt.plot(trend_x, trend_y, c='k', label='Model: Predicted trendline')
+plt.plot(trend_x[:, 0], trend_y, c='k', label='Model: Predicted trendline')
 plt.title('Mean Air Temperature Measurements')
 plt.xlabel('Year')
 plt.ylabel('Temperature (degC)')
