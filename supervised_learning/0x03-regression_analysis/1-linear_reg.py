@@ -53,13 +53,36 @@ trend_x[:, 2] = [10 if _x > 1945 else 0 for _x in x]
 print(trend_x)
 trend_y = model.predict(trend_x)
 print(trend_y)
+#fitting a parabolic model
+df_group_year['Year'] = df_group_year.index
+df_group_year['Year2'] = df_group_year.index ** 2
+print(df_group_year.head())
+model.fit(df_group_year[['Year2', 'Year']], df_group_year.AverageTemperature)
+#printing the coefficients
+print("a = {}".format(model.coef_[0]))
+print("m = {}".format(model.coef_[1]))
+print ("c = {}".format(model.intercept_))
+print("\n Model Definition")
+print("y = {}x^2 + {}x + {}".format(model.coef_[0], model.coef_[1], model.intercept_))
+#performance evaluation
+r2 = model.score(df_group_year[['Year2', 'Year']], df_group_year.AverageTemperature)
+print("r2 score = {}".format(r2))
+#linspace to get a range of values
+x = np.linspace(df_group_year['Year'].min(), df_group_year['Year'].max(), 20)
+print(x)
+trend_x = np.zeros((20, 2))
+trend_x[:, 0] = x ** 2 #first column
+trend_x[:, 1] = x
+print(trend_x)
+trend_y = model.predict(trend_x)
+print(trend_y)
 #plotting measurements by year along with moving average signal
 plt.figure(figsize=(10, 7))
 #Temp measurements
 plt.scatter(df_group_year.index, df_group_year.AverageTemperature, label='Raw Data', c='k')
 plt.plot(df_group_year.index, rolling, c='k', linestyle='--',
          label='{} year moving average'.format(window))
-plt.plot(trend_x[:, 0], trend_y, c='k', label='Model: Predicted trendline')
+plt.plot(trend_x[:, 1], trend_y, c='k', label='Model: Predicted trendline')
 plt.title('Mean Air Temperature Measurements')
 plt.xlabel('Year')
 plt.ylabel('Temperature (degC)')
