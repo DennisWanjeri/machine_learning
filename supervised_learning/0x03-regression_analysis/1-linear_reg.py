@@ -29,6 +29,9 @@ trend_x = np.array([
 ])
 trend_y = model.predict(trend_x.reshape((-1, 1)))
 print(trend_y)
+#r2 value
+r2 = model.score(df_group_year.index.values.reshape((-1, 1)), df_group_year.AverageTemperature)
+print("r2 score = {}".format(r2))
 #plotting measurements by year along with moving average signal
 plt.figure(figsize=(10, 7))
 #Temp measurements
