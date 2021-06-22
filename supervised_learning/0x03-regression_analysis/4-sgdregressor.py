@@ -32,13 +32,16 @@ model.fit(x.values.reshape((-1, 1)), y_true)
 y_pred = model.predict(x.values.reshape((-1, 1)))
 r2_score(y_true, y_pred)
 
+x = np.linspace(df_group_year['Year'].min(), df_group_year['Year'].max(), 20)
+_x = x/x.max()
+trend_y = model.predict(_x.reshape((-1, 1)))
 #plotting
 plt.figure(figsize=(10, 7))
 #Temp measurements
 plt.scatter(df_group_year.index, df_group_year.AverageTemperature, label='Raw Data', c='k')
 plt.plot(df_group_year.index, rolling, c='k', linestyle='--',
          label='{} year moving average'.format(window))
-plt.plot(x, y_pred, c='k', label='Model: Predicted trendline')
+plt.plot(x, trend_y, c='k', label='Model: Predicted trendline')
 plt.title('Mean Air Temperature Measurements')
 plt.xlabel('Year')
 plt.ylabel('Temperature (degC)')
