@@ -72,3 +72,31 @@ plt.title('Trqining History')
 plt.xlabel('epoch')
 plt.ylabel('Error')
 plt.savefig('model_training.png')
+
+#r squared score
+from sklearn.metrics import r2_score
+r2_score(y_true, y_pred)
+#linspace to get 20yr increments
+x = np.linspace(df_group_year['Year'].min(), df_group_year['Year'].max(), 20)
+print(x)
+#trend_x
+trend_x = np.ones((2, len(x)))
+trend_x[0, :] = x
+trend_x[1, :] = 1
+trend_x /= trend_x.max()
+print(trend_x)
+trend_y = h_x(Theta, trend_x)
+
+#plotting the trendline
+plt.figure(figsize=(10, 7))
+#Temp measurements
+plt.scatter(df_group_year.index, df_group_year.AverageTemperature, label='Raw Data', c='k')
+plt.plot(df_group_year.index, rolling, c='k', linestyle='--',
+         label='{} year moving average'.format(window))
+plt.plot(x, trend_y, c='k', label='Model: Predicted trendline')
+plt.title('Mean Air Temperature Measurements')
+plt.xlabel('Year')
+plt.ylabel('Temperature (degC)')
+plt.xticks(range(df_group_year.index.min(), df_group_year.index.max(), 10))
+plt.legend()
+plt.savefig('gradient_descent.png')
