@@ -37,3 +37,7 @@ plt.xlabel('Year')
 plt.ylabel('Price ($)')
 plt.savefig('1-spx.png')
 plt.legend()
+#auto_correlation plot
+plt.figure(figsize=(10,7))
+pd.plotting.autocorrelation_plot(df.close)
+plt.savefig('autocorrelation.png')
