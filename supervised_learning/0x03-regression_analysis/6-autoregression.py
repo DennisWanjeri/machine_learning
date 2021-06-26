@@ -41,3 +41,12 @@ plt.legend()
 plt.figure(figsize=(10,7))
 pd.plotting.autocorrelation_plot(df.close)
 plt.savefig('autocorrelation.png')
+#visualizing the lag
+plt.figure(figsize=(10, 7))
+ax = pd.plotting.autocorrelation_plot(df.close)
+ax.set_ylim([-0.1, 0.1])
+plt.savefig('visualized.png')
+#autocorrelation plot
+plt.figure(figsize=(10,7))
+pd.plotting.lag_plot(df.close, lag=100)
+plt.savefig('lag_plot.png')
