@@ -24,12 +24,16 @@ for x in df.date:
 df['Year'] = yr
 print(df.head(n=20))
 
+print(df.close[:10].values)
+print(df.close[:10].shift(3).values)
 #plotting
 plt.figure(figsize=(10, 7))
 plt.plot(df.close.values)
+plt.plot(df.close.shift(100), c='k', linestyle=':', label='Lag 100')
 yrs = [yr for yr in df.Year.unique() if (int(yr[-2:]) % 5 == 0)]
 plt.xticks(np.arange(0, len(df), len(df) // len(yrs)), yrs)
 plt.title('S&P 500 Daily Closing Price')
 plt.xlabel('Year')
 plt.ylabel('Price ($)')
 plt.savefig('1-spx.png')
+plt.legend()
