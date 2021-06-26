@@ -22,3 +22,20 @@ ax2.scatter(df.RM, df.MEDV, marker='*', c='k')
 ax2.get_yaxis().set_visible(False)
 ax2.set_xlabel('average number of rooms per dwelling')
 plt.savefig('multiple.png')
+
+#modelling
+model = LinearRegression()
+model.fit(df.LSTAT.values.reshape((-1, 1)), df.MEDV.values.reshape((-1, 1)))
+r2 = model.score(df.LSTAT.values.reshape((-1, 1)), df.MEDV.values.reshape((-1, 1)))
+print(r2)
+
+#trained using avg no. of rooms
+model.fit(df.RM.values.reshape((-1, 1)), df.MEDV.values.reshape((-1, 1)))
+r2 = model.score(df.RM.values.reshape((-1, 1)), df.MEDV.values.reshape((-1, 1)))
+print(r2)
+
+#prediction based on LSTAT and RM values
+model.fit(df[['LSTAT', 'RM']], df.MEDV.values.reshape((-1, 1)))
+r2 = model.score(df[['LSTAT', 'RM']], df.MEDV.values.reshape((-1, 1)))
+
+print(r2)
