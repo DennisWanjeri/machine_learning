@@ -39,3 +39,10 @@ with gzip.open('t10k-images-idx3-ubyte.gz', 'rb') as f:
     magic, size, rows, cols = struct.unpack(">IIII", f.read(16))
     img_test = np.array(array("B", f.read())).reshape((size, rows, cols))
 
+plt.figure(figsize=(10, 7))
+for i in range(10):
+    plt.subplot(2, 5, i + 1)
+    plt.imshow(img[i], cmap='gray')
+    plt.title("{}".format(labels[i]))
+    plt.axis('off')
+plt.savefig('images.png')
