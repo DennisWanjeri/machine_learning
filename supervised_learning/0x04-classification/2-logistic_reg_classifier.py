@@ -62,6 +62,7 @@ labels_0_1_test = labels_test[samples_0_1_test]
 sample_0 = np.where((labels == 0))[0][0]
 sample_1 = np.where((labels == 1))[0][0]
 plt.figure(figsize=(10, 7))
+plt.subplot(2, 5, 1 + 1)
 plt.imshow(img[sample_0], cmap='gray')
 plt.imshow(img[sample_1], cmap='gray')
 plt.savefig('1_0_images.png')
