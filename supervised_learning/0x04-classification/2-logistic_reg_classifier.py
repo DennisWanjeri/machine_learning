@@ -39,6 +39,10 @@ with gzip.open('t10k-images-idx3-ubyte.gz', 'rb') as f:
     magic, size, rows, cols = struct.unpack(">IIII", f.read(16))
     img_test = np.array(array("B", f.read())).reshape((size, rows, cols))
 
+with gzip.open('t10k-labels-idx1-ubyte.gz', 'rb') as f:
+    magic, size = struct.unpack(">II", f.read(8))
+    labels_test = np.array(array("B", f.read()))
+
 plt.figure(figsize=(10, 7))
 for i in range(10):
     plt.subplot(2, 5, i + 1)
@@ -46,3 +50,18 @@ for i in range(10):
     plt.title("{}".format(labels[i]))
     plt.axis('off')
 plt.savefig('images.png')
+
+samples_0_1 = np.where((labels == 0) | (labels == 1))[0]
+images_0_1 = img[samples_0_1]
+labels_0_1 = labels[samples_0_1]
+
+samples_0_1_test = np.where((labels_test == 0) | (labels_test == 1))
+images_0_1_test = img_test[samples_0_1_test].reshape((-1, rows * cols))
+labels_0_1_test = labels_test[samples_0_1_test]
+
+sample_0 = np.where((labels == 0))[0][0]
+sample_1 = np.where((labels == 1))[0][0]
+plt.figure(figsize=(10, 7))
+plt.imshow(img[sample_0], cmap='gray')
+plt.imshow(img[sample_1], cmap='gray')
+plt.savefig('1_0_images.png')
