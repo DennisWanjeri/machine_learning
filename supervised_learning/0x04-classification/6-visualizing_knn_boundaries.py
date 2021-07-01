@@ -30,6 +30,7 @@ print(xx)
 print(yy)
 pred_x = np.c_[xx.ravel(), yy.ravel()] # Concatenate the results
 print(pred_x)
+pred_y = model.predict(pred_x).reshape(xx.shape)
 # create color maps
 cmap_light = ListedColormap(['#F6A56F', '#6FF6A5', '#A56FF6'])
 cmap_bold = ListedColormap(['#E6640E', '#0EE664', '#640EE6'])
@@ -51,3 +52,13 @@ plt.xlabel('Sepal Length (mm)')
 plt.ylabel('Petal Width (mm)')
 plt.legend()
 plt.savefig('visualized_boundari.png')
+
+# prediction mesh data
+plt.figure(figsize=(10, 7))
+plt.pcolormesh(xx, yy, pred_y, cmap=cmap_light)
+plt.scatter(df['Sepal Length'], df['Petal Width'], c=df.Species,
+            cmap=cmap_bold, edgecolor='k', s=20)
+plt.title('Species Decision Boundaries Sepal Length vs Petal Width')
+plt.xlabel('Sepal Length (mm)')
+plt.ylabel('Petal Width (mm)')
+plt.savefig('decision_boundaries.png')
