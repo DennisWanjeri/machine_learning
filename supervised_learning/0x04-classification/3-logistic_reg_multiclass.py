@@ -53,8 +53,8 @@ selected_labels = labels[selection]
 selected_images = selected_images.reshape((-1, rows * cols))
 print(selected_images.shape)
 
-# selected_images = selected_images / 255.0
-# img_test = img_test / 255.0
+selected_images = selected_images / 255.0
+img_test = img_test / 255.0
 
 model = LogisticRegression(solver='lbfgs', multi_class='multinomial', max_iter=500,tol=0.1)
 print(model.fit(X=selected_images, y=selected_labels))
@@ -69,3 +69,8 @@ plt.subplot(1, 2, 2)
 plt.imshow(selected_images[1].reshape((28, 28)), cmap='gray')
 plt.axis('off')
 plt.savefig('1_4_prediction.png')
+
+#probability score
+print(model.predict_proba(selected_images)[0])
+
+print(model.score(X=img_test.reshape((-1, rows * cols)), y=labels_test))
