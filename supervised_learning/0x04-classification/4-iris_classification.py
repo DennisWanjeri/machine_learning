@@ -26,3 +26,28 @@ plt.xlabel('Sepal Width (mm)')
 plt.ylabel('Petal Length (mm)')
 plt.legend()
 plt.savefig('iris_scatter.png')
+
+# Selected features
+selected_features = [
+    'Sepal Width',
+    'Petal Length'
+]
+# converting Species into labels
+species = [
+    'Iris-setosa', # 0
+    'Iris-versicolor', # 1
+    'Iris-virginica', # 2
+]
+output = [species.index(spec) for spec in df['Species']]
+print(output)
+
+model = LogisticRegression(multi_class='auto', solver='lbfgs')
+print(model.fit(df[selected_features], output))
+print(model.score(df[selected_features], output))
+# another model
+selected_features = [
+    'Sepal Length',
+    'Petal Width'
+]
+print(model.fit(df[selected_features], output))
+print(model.score(df[selected_features], output))
