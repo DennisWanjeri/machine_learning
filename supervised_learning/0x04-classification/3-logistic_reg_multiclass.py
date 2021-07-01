@@ -43,45 +43,29 @@ with gzip.open('t10k-labels-idx1-ubyte.gz', 'rb') as f:
     magic, size = struct.unpack(">II", f.read(8))
     labels_test = np.array(array("B", f.read()))
 
+
+# selecting a random subset of overall data
+np.random.seed(0)
+selection = np.random.choice(len(img), 5000)
+selected_images = img[selection]
+selected_labels = labels[selection]
+
+selected_images = selected_images.reshape((-1, rows * cols))
+print(selected_images.shape)
+
+# selected_images = selected_images / 255.0
+# img_test = img_test / 255.0
+
+model = LogisticRegression(solver='lbfgs', multi_class='multinomial', max_iter=500,tol=0.1)
+print(model.fit(X=selected_images, y=selected_labels))
+print(model.score(X=selected_images, y=selected_labels))
+print(model.predict(selected_images)[:2])
+
 plt.figure(figsize=(10, 7))
-for i in range(10):
-    plt.subplot(2, 5, i + 1)
-    plt.imshow(img[i], cmap='gray')
-    plt.title("{}".format(labels[i]))
-    plt.axis('off')
-plt.savefig('images.png')
-
-samples_0_1 = np.where((labels == 0) | (labels == 1))[0]
-images_0_1 = img[samples_0_1]
-labels_0_1 = labels[samples_0_1]
-
-samples_0_1_test = np.where((labels_test == 0) | (labels_test == 1))
-images_0_1_test = img_test[samples_0_1_test].reshape((-1, rows * cols))
-labels_0_1_test = labels_test[samples_0_1_test]
-
-sample_0 = np.where((labels == 0))[0][0]
-sample_1 = np.where((labels == 1))[0][0]
-plt.figure(figsize=(10, 7))
-plt.imshow(img[sample_0], cmap='gray')
+plt.subplot(1, 2, 1)
+plt.imshow(selected_images[0].reshape((28, 28)), cmap='gray')
 plt.axis('off')
-plt.savefig('0_images.png')
-
-plt.figure(figsize=(10, 7))
-plt.imshow(img[sample_1], cmap='gray')
+plt.subplot(1, 2, 2)
+plt.imshow(selected_images[1].reshape((28, 28)), cmap='gray')
 plt.axis('off')
-plt.savefig('1-image.png')
-
-# rearranging images to vector format
-images_0_1 = images_0_1.reshape((-1, rows * cols))
-print(images_0_1.shape)
-model = LogisticRegression(solver='liblinear')
-print(model.fit(X=images_0_1, y=labels_0_1))
-# performance
-r = model.score(X=images_0_1, y=labels_0_1)
-print(r)
-print(model.predict(images_0_1) [:2])
-# probabilities produced by the model for the training set
-print(model.predict_proba(images_0_1)[:2])
-
-#computing performance against test check
-print(model.score(X=images_0_1_test, y=labels_0_1_test))
+plt.savefig('1_4_prediction.png')
