@@ -1,9 +1,0 @@
-#!/usr/bin/python3
-"""KNN Classification"""
-import matplotlib
-matplotlib.use('Agg')
-import pandas as pd
-import matplotlib.pyplot as plt
-from sklearn.neighbors import KNeighborsClassifier as KNN
-df = pd.read_csv('iris-data.csv')
-print(df.head())
