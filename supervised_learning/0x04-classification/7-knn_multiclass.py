@@ -36,3 +36,27 @@ for i in range(10):
     plt.axis('off')
 
 plt.savefig('7-sample.png')
+
+# selaction
+selection = np.random.choice(len(img), 5000)
+selected_images = img[selection]
+selected_labels = labels[selection]
+print(img.shape)
+print(selected_images.shape)
+selected_images = selected_images.reshape((-1, rows * cols))
+print(selected_images.shape)
+
+model = KNN(n_neighbors=3)
+print(model.fit(X=selected_images, y=selected_labels))
+print(model.score(X=selected_images, y=selected_labels))
+
+# display first two predictions
+print(model.predict(selected_images)[:2])
+plt.figure(figsize=(10, 7))
+plt.subplot(1, 2, 1)
+plt.imshow(selected_images[0].reshape((28, 28)), cmap='gray')
+plt.axis('off')
+plt.subplot(1, 2, 2)
+plt.imshow(selected_images[1].reshape((28, 28)), cmap='gray')
+plt.axis('off')
+plt.savefig("7-predictions.png")
