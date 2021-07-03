@@ -60,3 +60,6 @@ plt.subplot(1, 2, 2)
 plt.imshow(selected_images[1].reshape((28, 28)), cmap='gray')
 plt.axis('off')
 plt.savefig("7-predictions.png")
+
+# scoring against test data
+model.score(X=img_test.reshape((-1, rows * cols)), y=labels_test)
