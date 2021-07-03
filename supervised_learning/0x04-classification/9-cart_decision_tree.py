@@ -23,7 +23,5 @@ model = model.fit(df[['Sepal Length', 'Sepal Width', 'Petal Length', 'Petal Widt
 print(model.score(df[['Sepal Length', 'Sepal Width', 'Petal Length', 'Petal Width']], df.Species))
 print(model.score(df_test[['Sepal Length', 'Sepal Width', 'Petal Length', 'Petal Width']], df_test.Species))
 
-plt.figure(figsize=(10, 7))
-dot_data = export_graphviz(model, out_file=None)
+dot_data = export_graphviz(model, out_file='dot_data.dot')
 graph = graphviz.Source(dot_data)
-plt.savefig('dot_data.png')
