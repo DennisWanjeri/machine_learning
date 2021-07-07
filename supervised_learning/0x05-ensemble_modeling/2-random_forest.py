@@ -9,6 +9,7 @@ from sklearn.metrics import accuracy_score
 from sklearn.model_selection import KFold
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.ensemble import BaggingClassifier
+from sklearn.ensemble import RandomForestClassifier
 
 # preparing the dataset
 data = pd.read_csv('titanic.csv')
@@ -73,4 +74,24 @@ print('Decision Tree:\n> Accuracy on training data = {:.4f}\n> Accuracy on\
 validation data = {:.4f}'.format(
     accuracy_score(y_true=y_train, y_pred=dt_preds_train),
     accuracy_score(y_true=y_val, y_pred=dt_preds_val)
+))
+
+# Building the Ensemble Model using Random Forest
+rf_params = {
+    'n_estimators': 100,
+    'criterion': 'entropy',
+    'max_features': 0.5,
+    'min_samples_leaf': 10,
+    'random_state': 11,
+    'n_jobs': -1
+}
+rf = RandomForestClassifier(**rf_params)
+rf.fit(x_train, y_train)
+rf_preds_train = rf.predict(x_train)
+rf_preds_val = rf.predict(x_val)
+
+print('Random Forest:\n> Accuracy on training data = {:.4f}\n> Accuracy on\
+validation data = {:.4f}'.format(
+    accuracy_score(y_true=y_train, y_pred=rf_preds_train),
+    accuracy_score(y_true=y_val, y_pred=rf_preds_val)
 ))
