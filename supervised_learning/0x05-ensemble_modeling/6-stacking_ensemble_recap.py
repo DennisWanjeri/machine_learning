@@ -172,8 +172,7 @@ mae_scores = pd.concat([pd.Series(train_mae_values, name='train'),
                 axis=1)
 print(mae_scores)
 
-plt.figure(figsize=(10, 7))
-mae_scores.plot(kind='bar')
+mae_scores.plot(kind='bar', figsize=(10, 7))
 plt.ylabel('MAE')
 plt.xlabel('Model')
 plt.savefig('mae_scores.png')
