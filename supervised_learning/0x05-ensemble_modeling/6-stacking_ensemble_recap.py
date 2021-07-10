@@ -58,7 +58,7 @@ val_mae_values['dt'] = mean_absolute_error(y_true=y_val, y_pred=dt_preds_val)
 
 #train a k-nearest neighbour's model
 knn_params = {
-    'n_neighbours': 5
+    'n_neighbors': 5
 }
 knn = KNeighborsRegressor(**knn_params)
 
@@ -106,3 +106,74 @@ train_mae_values['gbr'] = mean_absolute_error(y_true=y_train, y_pred=gbr_preds_t
 
 val_mae_values['gbr'] = mean_absolute_error(y_true=y_val, y_pred=gbr_preds_val)
 
+# additional prediction columns
+num_base_predictors = len(train_mae_values) # 4
+x_train_with_metapreds = np.zeros((x_train.shape[0], x_train.shape[1]+num_base_predictors))
+x_train_with_metapreds[:, :-num_base_predictors] = x_train
+x_train_with_metapreds[:, -num_base_predictors:] = -1
+
+kf = KFold(n_splits=5, random_state=11)
+
+for train_indices, val_indices in kf.split(x_train):
+    kfold_x_train, kfold_x_val = x_train.iloc[train_indices], x_train.iloc[val_indices]
+
+    kfold_y_train, kfold_y_val = y_train[train_indices], y_train[val_indices]
+
+    predictions = []
+
+    dt = DecisionTreeRegressor(**dt_params)
+    dt.fit(kfold_x_train, kfold_y_train)
+    predictions.append(dt.predict(kfold_x_val))
+    knn = KNeighborsRegressor(**knn_params)
+    knn.fit(kfold_x_train, kfold_y_train)
+    predictions.append(knn.predict(kfold_x_val))
+    gbr = GradientBoostingRegressor(**gbr_params)
+    rf.fit(kfold_x_train, kfold_y_train)
+    predictions.append(rf.predict(kfold_x_val))
+    gbr = GradientBoostingRegressor(**gbr_params)
+    gbr.fit(kfold_x_train, kfold_y_train)
+    predictions.append(gbr.predict(kfold_x_val))
+
+    for i, preds in enumerate(predictions):
+        x_train_with_metapreds[val_indices, -(i+1)] = preds
+
+#create a new validation set with additional columns
+x_val_with_metapreds = np.zeros((x_val.shape[0], x_val.shape[1]+num_base_predictors))
+x_val_with_metapreds[:, :-num_base_predictors] = x_val
+x_val_with_metapreds[:, -num_base_predictors:] = -1
+
+predictions = []
+dt = DecisionTreeRegressor(**dt_params)
+dt.fit(x_train, y_train)
+predictions.append(dt.predict(x_val))
+
+knn = KNeighborsRegressor(**knn_params)
+knn.fit(x_train, y_train)
+predictions.append(knn.predict(x_val))
+
+gbr = GradientBoostingRegressor(**gbr_params)
+rf.fit(x_train, y_train)
+predictions.append(rf.predict(x_val))
+
+for i, preds in enumerate(predictions):
+    x_val_with_metapreds[:, -(i+1)] = preds
+
+# train a linear regression model as the stacked model
+lr = LinearRegression(normalize=False)
+lr.fit(x_train_with_metapreds, y_train)
+lr_preds_train = lr.predict(x_train_with_metapreds)
+lr_preds_val = lr.predict(x_val_with_metapreds)
+
+train_mae_values['lr'] = mean_absolute_error(y_true=y_train, y_pred=lr_preds_train)
+val_mae_values['lr'] = mean_absolute_error(y_true=y_val, y_pred=lr_preds_val)
+
+mae_scores = pd.concat([pd.Series(train_mae_values, name='train'),
+                 pd.Series(val_mae_values, name='val')],
+                axis=1)
+print(mae_scores)
+
+plt.figure(figsize=(10, 7))
+mae_scores.plot(kind='bar')
+plt.ylabel('MAE')
+plt.xlabel('Model')
+plt.savefig('mae_scores.png')
